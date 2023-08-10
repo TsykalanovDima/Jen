@@ -1,23 +1,21 @@
-import time
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from behave import *
 
-@given('open page')
-def step_impl(context):
+@given('Open page')
+def open_page(context):
     chrome_driver_path = "/Users/dimatsy/Downloads/chromedriver-mac-arm64/chromedriver"
     service = webdriver.chrome.service.Service(chrome_driver_path)
     context.driver = webdriver.Chrome(service=service)
 
 @when('Open page')
-def step_impl(context):
-    context.driver.get("https://www.google.com")
+def open_page_1(context):
+    context.driver.get("https://www.saucedemo.com/")
 
-@when('Click cookie consent')
-def step_impl(context):
+@when('Enter username and password')
+def till(context):
     Login = WebDriverWait(context.driver, 10).until(
         EC.presence_of_element_located((By.ID, 'user-name'))
     )
@@ -29,8 +27,8 @@ def step_impl(context):
     Psw.send_keys('secret_sauce')
 
 
-@then('till infromation')
-def step_impl(context):
+@then('Click login button and assert')
+def button_and_check(context):
     button = WebDriverWait(context.driver, 10).until(
         EC.presence_of_element_located((By.ID, 'login-button'))
     )
@@ -42,6 +40,6 @@ def step_impl(context):
     except Exception as e:
         print("Bag", e)
 
-@then('quit browser')
+@then('Quit browser')
 def step_impl(context):
     context.driver.quit()
