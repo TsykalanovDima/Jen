@@ -27,8 +27,15 @@ pipeline {
     post {
         always {
             // Очистка ресурсов, завершение сеансов и т.д.
-            sh 'pkill -9 chromedriver'
-            sh 'pkill -9 chrome'
+            script {
+                try {
+                    sh 'pkill -9 chromedriver || true'
+                    sh 'pkill -9 chrome || true'
+                } catch (Exception e) {
+                    currentBuild.result = 'FAILURE'
+                    throw e
+                }
+            }
         }
     }
 }
