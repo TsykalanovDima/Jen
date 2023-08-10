@@ -2,40 +2,30 @@ pipeline {
     agent any
     
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                // Получение исходного кода из репозитория
-                checkout scm
+                git 'https://github.com/your-username/your-repo.git'
             }
         }
         
-        stage('Install Dependencies') {
+        stage('Setup Environment') {
             steps {
-                // Установка зависимостей (если необходимо)
-                sh 'pip install -r requirements.txt'
+                sh 'pip install -r requirements.txt' // Установка зависимостей Python из requirements.txt
+                sh 'pip install selenium' // Установка библиотеки Selenium
+                sh 'brew install --cask chromedriver' // Установка chromedriver на MacOS (предполагается, что Homebrew установлен)
             }
         }
         
         stage('Run Tests') {
             steps {
-                // Запуск BDD-тестов
-                sh 'behave /путь/к/файлу/google.feature'
+                sh 'behave features'
             }
         }
     }
     
     post {
         always {
-            // Очистка ресурсов, завершение сеансов и т.д.
-            script {
-                try {
-                    sh 'pkill -9 chromedriver || true'
-                    sh 'pkill -9 chrome || true'
-                } catch (Exception e) {
-                    currentBuild.result = 'FAILURE'
-                    throw e
-                }
-            }
+            sh 'pkill -f chromedriver' // Завершение chromedriver
         }
     }
 }
