@@ -18,20 +18,29 @@ def step_impl(context):
 
 @when('Click cookie consent')
 def step_impl(context):
-    cookie_button = WebDriverWait(context.driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, '//*[@id="L2AGLb"]/div'))
+    Login = WebDriverWait(context.driver, 10).until(
+        EC.presence_of_element_located((By.ID, 'user-name'))
     )
-    cookie_button.click()
+    Login.send_keys('standard_user')
+
+    Psw = WebDriverWait(context.driver, 10).until(
+        EC.presence_of_element_located((By.ID, 'password'))
+    )
+    Psw.send_keys('secret_sauce')
 
 
 @then('till infromation')
 def step_impl(context):
-
-    input_element = WebDriverWait(context.driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="APjFqb"]'))
+    button = WebDriverWait(context.driver, 10).until(
+        EC.presence_of_element_located((By.ID, 'login-button'))
     )
-    input_element.send_keys("привет")
-    time.sleep(3)
+    button.click()
+    try:
+        test_text = context.driver.find_element(By.CLASS_NAME, 'app_logo').text
+        assert test_text == 'Swag Labs', "False - "
+        print("True + ")
+    except Exception as e:
+        print("Bag", e)
 
 @then('quit browser')
 def step_impl(context):
