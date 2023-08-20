@@ -10,7 +10,7 @@ pipeline {
                     extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'my-repo']],
                     submoduleCfg: [],
                     userRemoteConfigs: [[
-                        credentialsId: '', // ssh key
+                        credentialsId: ' ', // ssh key
                         url: 'https://github.com/TsykalanovDima/Jen' // ssh url
                     ]]
                 ])
